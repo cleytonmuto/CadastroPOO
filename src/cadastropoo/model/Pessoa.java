@@ -1,16 +1,14 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package cadastropoo.model;
 
 import java.io.Serializable;
 
 /**
- * 
+ *
  * @author Cleyton
  */
 public class Pessoa implements Serializable {
+    
+    private static final long serialVersionUID = (long) (Long.MAX_VALUE * Math.random());
     
     private int id;
     private String nome;
@@ -42,8 +40,12 @@ public class Pessoa implements Serializable {
     }
     
     public void exibir() {
-        System.out.println("Id: " + getId());
+        System.out.println("ID: " + getId());
         System.out.println("Nome: " + getNome());
+    }
+    
+    public long getSerialVersionUID() {
+        return serialVersionUID;
     }
     
 }

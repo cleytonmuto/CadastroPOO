@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package cadastropoo.model;
 
 import java.io.Serializable;
@@ -12,11 +8,14 @@ import java.io.Serializable;
  */
 public class PessoaFisica extends Pessoa implements Serializable {
     
+    private static final long serialVersionUID = (long) (Long.MAX_VALUE * Math.random());
+    
     private String cpf;
     private int idade;
     
     public PessoaFisica() {
-        
+        cpf = "";
+        idade = 0;
     }
     
     public PessoaFisica(String cpf, int idade) {
@@ -47,10 +46,22 @@ public class PessoaFisica extends Pessoa implements Serializable {
         this.idade = idade;
     }
     
+    @Override
+    /**
+     * overriden method exibir()
+     */
     public void exibir() {
         super.exibir();
         System.out.println("CPF: " + getCpf());
         System.out.println("Idade: " + getIdade());
+    }
+    
+    @Override
+    /**
+     * overriden method getSerialVersionUID()
+     */
+    public long getSerialVersionUID() {
+        return serialVersionUID;
     }
     
 }

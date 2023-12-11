@@ -1,43 +1,47 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package cadastropoo.model;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.IOException;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
- * 
+ *
  * @author Cleyton
  */
 public class PessoaFisicaRepo implements Serializable {
     
+    private static final long serialVersionUID = (long) (Long.MAX_VALUE * Math.random());
+    private static final Logger LOGGER = Logger.getLogger(PessoaFisicaRepo.class.getName());
+    
     private ArrayList<PessoaFisica> pessoasFisicas;
     
     public PessoaFisicaRepo() {
-        pessoasFisicas = new ArrayList<PessoaFisica>();
+        pessoasFisicas = new ArrayList<>();
     }
     
     public void inserir(PessoaFisica pf) {
         pessoasFisicas.add(pf);
     }
     
-    public void alterar(PessoaFisica pf, int position) {
+    public void alterar(int position, PessoaFisica pf) {
         pessoasFisicas.set(position, pf);
     }
     
-    public void excluir(PessoaFisica pf) {
-        pessoasFisicas.remove(pf);
+    public boolean excluir(int id) {
+        return pessoasFisicas.remove(obter(id));
     }
     
-    public PessoaFisica obter(int position) {
-        return pessoasFisicas.get(position);
+    public PessoaFisica obter(int id) {
+        return pessoasFisicas.stream()
+            .filter(pf -> pf.getId() == id)
+            .findFirst()
+            .orElse(null);
     }
     
     public ArrayList<PessoaFisica> obterTodos() {
@@ -45,34 +49,30 @@ public class PessoaFisicaRepo implements Serializable {
     }
     
     public void persistir(String filename) {
-        try {
-            FileOutputStream fos = new FileOutputStream(filename);
-            ObjectOutputStream oos = new ObjectOutputStream(fos);
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filename))) {
             oos.writeObject(pessoasFisicas);
-            oos.close();
-            fos.close();
         }
         catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, e.toString(), e);
         }
-        System.out.println("Dados de Pessoa Fisica Armazenados.");
+        System.out.println("Dados de Pessoa Fisica armazenados.");
     }
     
     public void recuperar(String filename) {
-        try {
-            FileInputStream fis = new FileInputStream(filename);
-            ObjectInputStream ois = new ObjectInputStream(fis);
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filename))) {
             pessoasFisicas = (ArrayList<PessoaFisica>) ois.readObject();
-            ois.close();
-            fis.close();
         }
         catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.WARNING, e.toString(), e);
         }
         catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, e.toString(), e);
         }
-        System.out.println("Dados de Pessoa Fisica Recuperados.");
+        System.out.println("Dados de Pessoa Fisica recuperados.");
+    }
+    
+    public long getSerialVersionUID() {
+        return serialVersionUID;
     }
     
 }

@@ -1,14 +1,12 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package cadastropoo.model;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.IOException;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -18,26 +16,32 @@ import java.util.ArrayList;
  */
 public class PessoaJuridicaRepo implements Serializable{
     
+    private static final long serialVersionUID = (long) (Long.MAX_VALUE * Math.random());
+    private static final Logger LOGGER = Logger.getLogger(PessoaJuridicaRepo.class.getName());
+    
     private ArrayList<PessoaJuridica> pessoasJuridicas;
     
     public PessoaJuridicaRepo() {
-        pessoasJuridicas = new ArrayList<PessoaJuridica>();
+        pessoasJuridicas = new ArrayList<>();
     }
     
     public void inserir(PessoaJuridica pf) {
         pessoasJuridicas.add(pf);
     }
     
-    public void alterar(PessoaJuridica pf, int position) {
+    public void alterar(int position, PessoaJuridica pf) {
         pessoasJuridicas.set(position, pf);
     }
     
-    public void excluir(PessoaJuridica pf) {
-        pessoasJuridicas.remove(pf);
+    public boolean excluir(int id) {
+        return pessoasJuridicas.remove(obter(id));
     }
     
-    public PessoaJuridica obter(int position) {
-        return pessoasJuridicas.get(position);
+    public PessoaJuridica obter(int id) {
+        return pessoasJuridicas.stream()
+            .filter(pj -> pj.getId() == id)
+            .findFirst()
+            .orElse(null);
     }
     
     public ArrayList<PessoaJuridica> obterTodos() {
@@ -45,33 +49,29 @@ public class PessoaJuridicaRepo implements Serializable{
     }
     
     public void persistir(String filename) {
-        try {
-            FileOutputStream fos = new FileOutputStream(filename);
-            ObjectOutputStream oos = new ObjectOutputStream(fos);
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filename))) {
             oos.writeObject(pessoasJuridicas);
-            oos.close();
-            fos.close();
         }
         catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, e.toString(), e);
         }
         System.out.println("Dados de Pessoa Juridica Armazenados.");
     }
     
     public void recuperar(String filename) {
-        try {
-            FileInputStream fis = new FileInputStream(filename);
-            ObjectInputStream ois = new ObjectInputStream(fis);
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filename))) {
             pessoasJuridicas = (ArrayList<PessoaJuridica>) ois.readObject();
-            ois.close();
-            fis.close();
         }
         catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.WARNING, e.toString(), e);
         }
         catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, e.toString(), e);
         }
         System.out.println("Dados de Pessoa Juridica Recuperados.");
+    }
+    
+    public long getSerialVersionUID() {
+        return serialVersionUID;
     }
 }
