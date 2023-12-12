@@ -25,12 +25,17 @@ public class PessoaJuridicaRepo implements Serializable{
         pessoasJuridicas = new ArrayList<>();
     }
     
-    public void inserir(PessoaJuridica pf) {
-        pessoasJuridicas.add(pf);
+    public void inserir(PessoaJuridica pj) {
+        pessoasJuridicas.add(pj);
     }
     
-    public void alterar(int position, PessoaJuridica pf) {
-        pessoasJuridicas.set(position, pf);
+    public boolean alterar(PessoaJuridica pj) {
+        int position = pessoasJuridicas.indexOf(pj);
+        if (position != -1) {
+            pessoasJuridicas.set(position, pj);
+            return true;
+        }
+        return false;
     }
     
     public boolean excluir(int id) {

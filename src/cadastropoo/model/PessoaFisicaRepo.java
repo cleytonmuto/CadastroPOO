@@ -29,8 +29,13 @@ public class PessoaFisicaRepo implements Serializable {
         pessoasFisicas.add(pf);
     }
     
-    public void alterar(int position, PessoaFisica pf) {
-        pessoasFisicas.set(position, pf);
+    public boolean alterar(PessoaFisica pf) {
+        int position = pessoasFisicas.indexOf(pf);
+        if (position != -1) {
+            pessoasFisicas.set(position, pf);
+            return true;
+        }
+        return false;
     }
     
     public boolean excluir(int id) {
