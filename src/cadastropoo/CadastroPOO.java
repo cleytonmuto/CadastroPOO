@@ -8,6 +8,9 @@ import java.util.Scanner;
  * @author Cleyton
  */
 public class CadastroPOO {
+    
+    private final String FILE1 = "resources/pf.dat";
+    private final String FILE2 = "resources/pj.dat";
 
     public CadastroPOO() {
         
@@ -24,9 +27,9 @@ public class CadastroPOO {
         PessoaFisicaRepo repo1 = new PessoaFisicaRepo();
         repo1.inserir(pf1);
         repo1.inserir(pf2);
-        repo1.persistir("pf.dat");
+        repo1.persistir(FILE1);
         PessoaFisicaRepo repo2 = new PessoaFisicaRepo();
-        repo2.recuperar("pf.dat");
+        repo2.recuperar(FILE1);
         for (PessoaFisica pf : repo2.obterTodos()) {
             pf.exibir();
         }
@@ -38,9 +41,9 @@ public class CadastroPOO {
         PessoaJuridicaRepo repo3 = new PessoaJuridicaRepo();
         repo3.inserir(pj1);
         repo3.inserir(pj2);
-        repo3.persistir("pj.dat");
+        repo3.persistir(FILE2);
         PessoaJuridicaRepo repo4 = new PessoaJuridicaRepo();
-        repo4.recuperar("pj.dat");
+        repo4.recuperar(FILE2);
         for (PessoaJuridica pj : repo4.obterTodos()) {
             pj.exibir();
         }
@@ -68,9 +71,9 @@ public class CadastroPOO {
                         int idade = Integer.valueOf(in.nextLine());
                         PessoaFisica pf = new PessoaFisica(id, nome, cpf, idade);
                         PessoaFisicaRepo repoPF = new PessoaFisicaRepo();
-                        repoPF.recuperar("pf.dat");
+                        repoPF.recuperar(FILE1);
                         repoPF.inserir(pf);
-                        repoPF.persistir("pf.dat");
+                        repoPF.persistir(FILE1);
                     }
                     else if (escolhaIncluir.equals("J")) {
                         System.out.print("Informe o id da pessoa: ");
@@ -81,9 +84,9 @@ public class CadastroPOO {
                         String cnpj = in.nextLine();
                         PessoaJuridica pj = new PessoaJuridica(id, nome, cnpj);
                         PessoaJuridicaRepo repoPJ = new PessoaJuridicaRepo();
-                        repoPJ.recuperar("pj.dat");
+                        repoPJ.recuperar(FILE2);
                         repoPJ.inserir(pj);
-                        repoPJ.persistir("pj.dat");
+                        repoPJ.persistir(FILE2);
                     }
                     else {
                         System.out.println("Erro: Escolha Invalida!");
