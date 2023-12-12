@@ -59,15 +59,15 @@ public class CadastroPOO {
                 case "1": {
                     System.out.println("F - Pessoa Fisica | J - Pessoa Juridica");
                     System.out.print("ESCOLHA: ");
-                    String escolhaIncluir = in.nextLine();
+                    String escolhaIncluir = in.nextLine().toUpperCase();
                     if (escolhaIncluir.equals("F")) {
-                        System.out.print("Informe o id da pessoa: ");
+                        System.out.print("Informe o ID da Pessoa Fisica: ");
                         int id = Integer.valueOf(in.nextLine());
-                        System.out.print("Informe o nome da pessoa: ");
+                        System.out.print("Informe o nome da Pessoa Fisica: ");
                         String nome = in.nextLine();
-                        System.out.print("Informe o CPF da pessoa: ");
+                        System.out.print("Informe o CPF da Pessoa Fisica: ");
                         String cpf = in.nextLine();
-                        System.out.print("Informe o idade da pessoa: ");
+                        System.out.print("Informe o idade da Pessoa Fisica: ");
                         int idade = Integer.valueOf(in.nextLine());
                         PessoaFisica pf = new PessoaFisica(id, nome, cpf, idade);
                         PessoaFisicaRepo repoPF = new PessoaFisicaRepo();
@@ -76,11 +76,11 @@ public class CadastroPOO {
                         repoPF.persistir(FILE1);
                     }
                     else if (escolhaIncluir.equals("J")) {
-                        System.out.print("Informe o id da pessoa: ");
+                        System.out.print("Informe o ID da Pessoa Juridica: ");
                         int id = Integer.valueOf(in.nextLine());
-                        System.out.print("Informe o nome da pessoa: ");
+                        System.out.print("Informe o nome da Pessoa Juridica: ");
                         String nome = in.nextLine();
-                        System.out.print("Informe o CNPJ da pessoa: ");
+                        System.out.print("Informe o CNPJ da Pessoa Juridica: ");
                         String cnpj = in.nextLine();
                         PessoaJuridica pj = new PessoaJuridica(id, nome, cnpj);
                         PessoaJuridicaRepo repoPJ = new PessoaJuridicaRepo();
