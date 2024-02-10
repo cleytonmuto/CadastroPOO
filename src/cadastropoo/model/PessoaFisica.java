@@ -8,7 +8,7 @@ import java.io.Serializable;
  */
 public class PessoaFisica extends Pessoa implements Serializable {
     
-    private static final long serialVersionUID = (long) (Long.MAX_VALUE * Math.random());
+    private static final long serialVersionUID = 1L;
     
     private String cpf;
     private int idade;

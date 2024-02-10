@@ -8,7 +8,7 @@ import java.io.Serializable;
  */
 public class Pessoa implements Serializable {
     
-    private static final long serialVersionUID = (long) (Long.MAX_VALUE * Math.random());
+    private static final long serialVersionUID = 1L;
     
     private int id;
     private String nome;

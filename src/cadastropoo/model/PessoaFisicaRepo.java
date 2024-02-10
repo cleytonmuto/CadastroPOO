@@ -16,7 +16,7 @@ import java.util.ArrayList;
  */
 public class PessoaFisicaRepo implements Serializable {
     
-    private static final long serialVersionUID = (long) (Long.MAX_VALUE * Math.random());
+    private static final long serialVersionUID = 1L;
     private static final Logger LOGGER = Logger.getLogger(PessoaFisicaRepo.class.getName());
     
     private ArrayList<PessoaFisica> pessoasFisicas;
