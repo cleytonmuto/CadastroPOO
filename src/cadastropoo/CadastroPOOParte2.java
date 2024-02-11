@@ -4,6 +4,7 @@ import cadastropoo.model.*;
 import java.util.Scanner;
 import java.util.logging.Logger;
 import java.util.logging.Level;
+import java.io.File;
 
 /**
  *
@@ -12,20 +13,14 @@ import java.util.logging.Level;
 public class CadastroPOOParte2 {
     
     private static final Logger LOGGER = Logger.getLogger(CadastroPOOParte1.class.getName());
-    private final String FILE1;
-    private final String FILE2;
     private Scanner in;
     private PessoaFisicaRepo repoPF;
     private PessoaJuridicaRepo repoPJ;
     
     public CadastroPOOParte2() {
-        FILE1 = "resources/pf.dat";
-        FILE2 = "resources/pj.dat";
         in = new Scanner(System.in);
         repoPF = new PessoaFisicaRepo();
-        repoPF.recuperar(FILE1);
         repoPJ = new PessoaJuridicaRepo();
-        repoPJ.recuperar(FILE2);
     }
     
     private String strAnswerQuestion(String question) {
@@ -60,13 +55,13 @@ public class CadastroPOOParte2 {
                         String nome = strAnswerQuestion("Informe o nome da Pessoa Fisica: ");
                         String cpf = strAnswerQuestion("Informe o CPF da Pessoa Fisica: ");
                         int idade = intAnswerQuestion("Informe o idade da Pessoa Fisica: ");
-                        repoPF.inserir(FILE1, new PessoaFisica(id, nome, cpf, idade));
+                        repoPF.inserir(new PessoaFisica(id, nome, cpf, idade));
                     }
                     else if (escolhaIncluir.equals("J")) {
                         int id = intAnswerQuestion("Informe o ID da Pessoa Juridica: ");
                         String nome = strAnswerQuestion("Informe o nome da Pessoa Juridica: ");
                         String cnpj = strAnswerQuestion("Informe o CNPJ da Pessoa Juridica: ");
-                        repoPJ.inserir(FILE2, new PessoaJuridica(id, nome, cnpj));
+                        repoPJ.inserir(new PessoaJuridica(id, nome, cnpj));
                     }
                     else {
                         System.out.println("Erro: Escolha Invalida!");
@@ -82,7 +77,7 @@ public class CadastroPOOParte2 {
                             String nome = strAnswerQuestion("Informe o nome da Pessoa Fisica: ");
                             String cpf = strAnswerQuestion("Informe o CPF da Pessoa Fisica: ");
                             int idade = intAnswerQuestion("Informe o idade da Pessoa Fisica: ");
-                            repoPF.alterar(FILE1, new PessoaFisica(id, nome, cpf, idade));
+                            repoPF.alterar(new PessoaFisica(id, nome, cpf, idade));
                         }
                         catch (NullPointerException e){
                             System.err.println("ID nao encontrado!");
@@ -94,7 +89,7 @@ public class CadastroPOOParte2 {
                             int id = intAnswerQuestion("Informe o ID da Pessoa Juridica: ");
                             String nome = strAnswerQuestion("Informe o nome da Pessoa Juridica: ");
                             String cnpj = strAnswerQuestion("Informe o CNPJ da Pessoa Juridica: ");
-                            repoPJ.alterar(FILE2, new PessoaJuridica(id, nome, cnpj));
+                            repoPJ.alterar(new PessoaJuridica(id, nome, cnpj));
                         }
                         catch (NullPointerException e){
                             System.err.println("ID nao encontrado!");
@@ -109,10 +104,12 @@ public class CadastroPOOParte2 {
                     System.out.println("F - Pessoa Fisica | J - Pessoa Juridica");
                     String escolhaExcluir = strAnswerQuestion("TIPO DE PESSOA: ").toUpperCase();
                     if (escolhaExcluir.equals("F")) {
-                        System.out.println(new PessoaFisicaRepo().excluir(FILE1, intAnswerQuestion("Informe o ID da Pessoa Fisica: "))? "Excluido com sucesso." : "ID nao encontrado." );
+                        System.out.println(repoPF.excluir(intAnswerQuestion("Informe o ID da Pessoa Fisica: ")) ?
+                            "Excluido com sucesso." : "ID nao encontrado." );
                     }
                     else if (escolhaExcluir.equals("J")) {
-                        repoPJ.excluir(FILE2, intAnswerQuestion("Informe o ID da Pessoa Juridica: "));
+                        System.out.println(repoPJ.excluir(intAnswerQuestion("Informe o ID da Pessoa Juridica: ")) ?
+                            "Excluido com sucesso." : "ID nao encontrado." );
                     }
                     else {
                         System.out.println("Erro: Escolha Invalida!");
@@ -152,8 +149,29 @@ public class CadastroPOOParte2 {
                         pj.exibir();
                     }
                 }; break;
-                case "6": break;
-                case "7": break;
+                case "6": {
+                    String prefixo = strAnswerQuestion("Informe o prefixo do arquivo: ");
+                    String pfFilename = "resources/".concat(prefixo.concat(".fisica.bin"));
+                    String pjFilename = "resources/".concat(prefixo.concat(".juridica.bin"));
+                    repoPF.persistir(pfFilename);
+                    repoPJ.persistir(pjFilename);
+                    System.out.println("Dados persistidos com sucesso.");
+                };break;
+                case "7": {
+                    String prefixo = strAnswerQuestion("Informe o prefixo do arquivo: ");
+                    String pfFilename = "resources/".concat(prefixo.concat(".fisica.bin"));
+                    String pjFilename = "resources/".concat(prefixo.concat(".juridica.bin"));
+                    File pfFile = new File(pfFilename);
+                    File pjFile = new File(pjFilename);
+                    if (pfFile.exists() && pjFile.exists()) {
+                        repoPF.recuperar(pfFilename);
+                        repoPJ.recuperar(pjFilename);
+                        System.out.println("Dados recuperados com sucesso.");
+                    }
+                    else {
+                        System.out.println("Prefixo invalido. Arquivo nao encontrado.");
+                    }
+                }; break;
                 default: {
                     System.out.println("Escolha invalida!");
                 }; break;

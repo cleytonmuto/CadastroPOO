@@ -5,10 +5,10 @@ import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.IOException;
-import java.util.logging.Logger;
-import java.util.logging.Level;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 
 /**
  *
@@ -29,11 +29,6 @@ public class PessoaJuridicaRepo implements Serializable {
         return pessoasJuridicas.contains(pj) ? false : pessoasJuridicas.add(pj);
     }
     
-    public void inserir(String filename, PessoaJuridica pj) {
-        inserir(pj);
-        persistir(filename);
-    }
-    
     public boolean alterar(PessoaJuridica pj) {
         int position = pessoasJuridicas.indexOf(pj);
         if (position != -1) {
@@ -43,19 +38,8 @@ public class PessoaJuridicaRepo implements Serializable {
         return false;
     }
     
-    public void alterar(String filename, PessoaJuridica pj) {
-        alterar(pj);
-        persistir(filename);
-    }
-    
     public boolean excluir(int id) {
         return pessoasJuridicas.remove(obter(id));
-    }
-    
-    public boolean excluir(String filename, int id) {
-        boolean status = excluir(id);
-        persistir(filename);
-        return status;
     }
     
     public PessoaJuridica obter(int id) {
@@ -89,8 +73,5 @@ public class PessoaJuridicaRepo implements Serializable {
             LOGGER.log(Level.SEVERE, e.toString(), e);
         }
     }
-    
-    public long getSerialVersionUID() {
-        return serialVersionUID;
-    }
+
 }
