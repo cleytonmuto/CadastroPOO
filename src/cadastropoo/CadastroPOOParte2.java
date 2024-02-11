@@ -73,11 +73,16 @@ public class CadastroPOOParte2 {
                     if (escolhaAlterar.equals("F")) {
                         try {
                             int id = intAnswerQuestion("Informe o ID da Pessoa Fisica: ");
-                            repoPF.obter(id);
-                            String nome = strAnswerQuestion("Informe o nome da Pessoa Fisica: ");
-                            String cpf = strAnswerQuestion("Informe o CPF da Pessoa Fisica: ");
-                            int idade = intAnswerQuestion("Informe o idade da Pessoa Fisica: ");
-                            repoPF.alterar(new PessoaFisica(id, nome, cpf, idade));
+                            PessoaFisica pf = repoPF.obter(id);
+                            if (pf != null) {
+                                pf.setNome(strAnswerQuestion("Informe o nome da Pessoa Fisica: "));
+                                pf.setCpf(strAnswerQuestion("Informe o CPF da Pessoa Fisica: "));
+                                pf.setIdade(intAnswerQuestion("Informe o idade da Pessoa Fisica: "));
+                                repoPF.alterar(pf);
+                            }
+                            else {
+                                System.out.println("ID nao encontrado!");
+                            }
                         }
                         catch (NullPointerException e){
                             System.err.println("ID nao encontrado!");
@@ -87,9 +92,15 @@ public class CadastroPOOParte2 {
                     else if (escolhaAlterar.equals("J")) {
                         try {
                             int id = intAnswerQuestion("Informe o ID da Pessoa Juridica: ");
-                            String nome = strAnswerQuestion("Informe o nome da Pessoa Juridica: ");
-                            String cnpj = strAnswerQuestion("Informe o CNPJ da Pessoa Juridica: ");
-                            repoPJ.alterar(new PessoaJuridica(id, nome, cnpj));
+                            PessoaJuridica pj = repoPJ.obter(id);
+                            if (pj != null) {
+                                pj.setNome(strAnswerQuestion("Informe o nome da Pessoa Juridica: "));
+                                pj.setCnpj(strAnswerQuestion("Informe o CNPJ da Pessoa Juridica: "));
+                                repoPJ.alterar(pj);
+                            }
+                            else {
+                                System.out.println("ID nao encontrado!");
+                            }
                         }
                         catch (NullPointerException e){
                             System.err.println("ID nao encontrado!");
@@ -156,7 +167,7 @@ public class CadastroPOOParte2 {
                     repoPF.persistir(pfFilename);
                     repoPJ.persistir(pjFilename);
                     System.out.println("Dados persistidos com sucesso.");
-                };break;
+                }; break;
                 case "7": {
                     String prefixo = strAnswerQuestion("Informe o prefixo do arquivo: ");
                     String pfFilename = "resources/".concat(prefixo.concat(".fisica.bin"));
@@ -174,7 +185,7 @@ public class CadastroPOOParte2 {
                 }; break;
                 default: {
                     System.out.println("Escolha invalida!");
-                }; break;
+                };
             }
         }
     }
