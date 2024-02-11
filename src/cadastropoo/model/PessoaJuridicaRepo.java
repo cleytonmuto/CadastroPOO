@@ -14,7 +14,7 @@ import java.util.ArrayList;
  *
  * @author Cleyton
  */
-public class PessoaJuridicaRepo implements Serializable{
+public class PessoaJuridicaRepo implements Serializable {
     
     private static final long serialVersionUID = 1L;
     private static final Logger LOGGER = Logger.getLogger(PessoaJuridicaRepo.class.getName());
@@ -25,8 +25,8 @@ public class PessoaJuridicaRepo implements Serializable{
         pessoasJuridicas = new ArrayList<>();
     }
     
-    public void inserir(PessoaJuridica pj) {
-        pessoasJuridicas.add(pj);
+    public boolean inserir(PessoaJuridica pj) {
+        return pessoasJuridicas.contains(pj) ? false : pessoasJuridicas.add(pj);
     }
     
     public boolean alterar(PessoaJuridica pj) {

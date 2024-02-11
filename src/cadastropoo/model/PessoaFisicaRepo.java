@@ -25,8 +25,8 @@ public class PessoaFisicaRepo implements Serializable {
         pessoasFisicas = new ArrayList<>();
     }
     
-    public void inserir(PessoaFisica pf) {
-        pessoasFisicas.add(pf);
+    public boolean inserir(PessoaFisica pf) {
+        return pessoasFisicas.contains(pf) ? false : pessoasFisicas.add(pf);
     }
     
     public boolean alterar(PessoaFisica pf) {
@@ -60,7 +60,7 @@ public class PessoaFisicaRepo implements Serializable {
         catch (IOException e) {
             LOGGER.log(Level.SEVERE, e.toString(), e);
         }
-        System.out.println("Dados de Pessoa Fisica armazenados.");
+        System.out.println("Dados de Pessoa Fisica Armazenados.");
     }
     
     public void recuperar(String filename) {
@@ -73,7 +73,7 @@ public class PessoaFisicaRepo implements Serializable {
         catch (IOException e) {
             LOGGER.log(Level.SEVERE, e.toString(), e);
         }
-        System.out.println("Dados de Pessoa Fisica recuperados.");
+        System.out.println("Dados de Pessoa Fisica Recuperados.");
     }
     
     public long getSerialVersionUID() {
