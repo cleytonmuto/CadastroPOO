@@ -2,6 +2,8 @@ package cadastropoo;
 
 import cadastropoo.model.*;
 import java.util.Scanner;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 
 /**
  *
@@ -9,15 +11,18 @@ import java.util.Scanner;
  */
 public class CadastroPOO {
     
-    private final String FILE1 = "resources/pf.dat";
-    private final String FILE2 = "resources/pj.dat";
+    private static final Logger LOGGER = Logger.getLogger(CadastroPOO.class.getName());
+    private final String FILE1;
+    private final String FILE2;
     private Scanner in;
     
     public CadastroPOO() {
+        FILE1 = "resources/pf.dat";
+        FILE2 = "resources/pj.dat";
         in = new Scanner(System.in);
     }
     
-    private void run() {
+    private void runTestMode() {
         pfTest();
         pjTest();
     }
@@ -50,66 +55,144 @@ public class CadastroPOO {
         }
     }
     
-    private String answerQuestion(String question) {
+    private String strAnswerQuestion(String question) {
         System.out.print(question);
         return in.nextLine();
+    }
+    
+    private int intAnswerQuestion(String question) {
+        System.out.print(question);
+        String strValue = in.nextLine();
+        int intValue = 0;
+        try {
+            intValue = Integer.valueOf(strValue);
+        }
+        catch (NumberFormatException e) {
+            LOGGER.log(Level.SEVERE, e.toString(), e);
+        }
+        return intValue;
     }
     
     private void runMenuMode() {
         String opcao = "";
         while (!opcao.equals("0")) {
             printMenu();
-            opcao = answerQuestion("ESCOLHA: ");
+            opcao = strAnswerQuestion("ESCOLHA: ");
             switch (opcao) {
                 case "1": {
                     System.out.println("F - Pessoa Fisica | J - Pessoa Juridica");
-                    String escolhaIncluir = answerQuestion("ESCOLHA: ").toUpperCase();
+                    String escolhaIncluir = strAnswerQuestion("TIPO DE PESSOA: ").toUpperCase();
                     if (escolhaIncluir.equals("F")) {
-                        int id = Integer.valueOf(answerQuestion("Informe o ID da Pessoa Fisica: "));
-                        String nome = answerQuestion("Informe o nome da Pessoa Fisica: ");
-                        String cpf = answerQuestion("Informe o CPF da Pessoa Fisica: ");
-                        int idade = Integer.valueOf(answerQuestion("Informe o idade da Pessoa Fisica: "));
+                        int id = intAnswerQuestion("Informe o ID da Pessoa Fisica: ");
+                        String nome = strAnswerQuestion("Informe o nome da Pessoa Fisica: ");
+                        String cpf = strAnswerQuestion("Informe o CPF da Pessoa Fisica: ");
+                        int idade = intAnswerQuestion("Informe o idade da Pessoa Fisica: ");
                         PessoaFisica pf = new PessoaFisica(id, nome, cpf, idade);
                         PessoaFisicaRepo repoPF = new PessoaFisicaRepo();
-                        repoPF.recuperar(FILE1);
-                        repoPF.inserir(pf);
-                        repoPF.persistir(FILE1);
+                        repoPF.inserir(FILE1, pf);
                     }
                     else if (escolhaIncluir.equals("J")) {
-                        int id = Integer.valueOf(answerQuestion("Informe o ID da Pessoa Juridica: "));
-                        String nome = answerQuestion("Informe o nome da Pessoa Juridica: ");
-                        String cnpj = answerQuestion("Informe o CNPJ da Pessoa Juridica: ");
+                        int id = intAnswerQuestion("Informe o ID da Pessoa Juridica: ");
+                        String nome = strAnswerQuestion("Informe o nome da Pessoa Juridica: ");
+                        String cnpj = strAnswerQuestion("Informe o CNPJ da Pessoa Juridica: ");
                         PessoaJuridica pj = new PessoaJuridica(id, nome, cnpj);
                         PessoaJuridicaRepo repoPJ = new PessoaJuridicaRepo();
+                        repoPJ.inserir(FILE2, pj);
+                    }
+                    else {
+                        System.out.println("Erro: Escolha Invalida!");
+                    }
+                }; break;
+                case "2": {
+                    System.out.println("F - Pessoa Fisica | J - Pessoa Juridica");
+                    String escolhaAlterar = strAnswerQuestion("TIPO DE PESSOA: ").toUpperCase();
+                    if (escolhaAlterar.equals("F")) {
+                        int id = intAnswerQuestion("Informe o ID da Pessoa Fisica: ");
+                        String nome = strAnswerQuestion("Informe o nome da Pessoa Fisica: ");
+                        String cpf = strAnswerQuestion("Informe o CPF da Pessoa Fisica: ");
+                        int idade = intAnswerQuestion("Informe o idade da Pessoa Fisica: ");
+                        PessoaFisica pf = new PessoaFisica(id, nome, cpf, idade);
+                        PessoaFisicaRepo repoPF = new PessoaFisicaRepo();
+                        repoPF.alterar(FILE1, pf);
+                    }
+                    else if (escolhaAlterar.equals("J")) {
+                        int id = intAnswerQuestion("Informe o ID da Pessoa Juridica: ");
+                        String nome = strAnswerQuestion("Informe o nome da Pessoa Juridica: ");
+                        String cnpj = strAnswerQuestion("Informe o CNPJ da Pessoa Juridica: ");
+                        PessoaJuridica pj = new PessoaJuridica(id, nome, cnpj);
+                        PessoaJuridicaRepo repoPJ = new PessoaJuridicaRepo();
+                        repoPJ.alterar(FILE2, pj);
+                    }
+                    else {
+                        System.out.println("Erro: Escolha Invalida!");
+                    }
+                }; break;
+                case "3": {
+                    System.out.println("F - Pessoa Fisica | J - Pessoa Juridica");
+                    String escolhaExcluir = strAnswerQuestion("TIPO DE PESSOA: ").toUpperCase();
+                    if (escolhaExcluir.equals("F")) {
+                        PessoaFisicaRepo repoPF = new PessoaFisicaRepo();
+                        repoPF.excluir(FILE1, intAnswerQuestion("Informe o ID da Pessoa Fisica: "));
+                    }
+                    else if (escolhaExcluir.equals("J")) {
+                        PessoaJuridicaRepo repoPJ = new PessoaJuridicaRepo();
+                        repoPJ.excluir(FILE2, intAnswerQuestion("Informe o ID da Pessoa Juridica: "));
+                    }
+                    else {
+                        System.out.println("Erro: Escolha Invalida!");
+                    }
+                }; break;
+                case "4": {
+                    System.out.println("F - Pessoa Fisica | J - Pessoa Juridica");
+                    String escolhaExibir = strAnswerQuestion("TIPO DE PESSOA: ").toUpperCase();
+                    if (escolhaExibir.equals("F")) {
+                        PessoaFisicaRepo repoPF = new PessoaFisicaRepo();
+                        repoPF.recuperar(FILE1);
+                        repoPF.obter(intAnswerQuestion("Informe o ID da Pessoa Fisica: ")).exibir();
+                        repoPF.persistir(FILE1);
+                    }
+                    else if (escolhaExibir.equals("J")) {
+                        PessoaJuridicaRepo repoPJ = new PessoaJuridicaRepo();
                         repoPJ.recuperar(FILE2);
-                        repoPJ.inserir(pj);
+                        repoPJ.obter(intAnswerQuestion("Informe o ID da Pessoa Juridica: ")).exibir();
                         repoPJ.persistir(FILE2);
                     }
                     else {
                         System.out.println("Erro: Escolha Invalida!");
                     }
                 }; break;
-                case "2": break;
-                case "3": break;
-                case "4": break;
-                case "5": break;
+                case "5": {
+                    PessoaFisicaRepo repoPF = new PessoaFisicaRepo();
+                    repoPF.recuperar(FILE1);
+                    PessoaJuridicaRepo repoPJ = new PessoaJuridicaRepo();
+                    repoPJ.recuperar(FILE2);
+                    for (PessoaFisica pf : repoPF.obterTodos()) {
+                        pf.exibir();
+                    }
+                    for (PessoaJuridica pj : repoPJ.obterTodos()) {
+                        pj.exibir();
+                    }
+                }; break;
                 case "6": break;
                 case "7": break;
-                default: break;
+                default: {
+                    System.out.println("Escolha invalida!");
+                }; break;
             }
         }
     }
     
     private void printMenu() {
-        System.out.println("\n==============================");
+        System.out.println("\nMENU:");
+        System.out.println("==============================");
         System.out.println("1 - Incluir Pessoa");
         System.out.println("2 - Alterar Pessoa");
         System.out.println("3 - Excluir Pessoa");
         System.out.println("4 - Buscar pelo ID");
         System.out.println("5 - Exibir Todos");
-        System.out.println("6 - Persistir Dados");
+        System.out.println("6 - Salvar Dados");
         System.out.println("7 - Recuperar Todos");
-        System.out.println("0 - Finalizar Programa");
+        System.out.println("0 - Sair");
         System.out.println("==============================");
     }
     
@@ -119,7 +202,7 @@ public class CadastroPOO {
     public static void main(String[] args) {
         // TODO code application logic here
         CadastroPOO obj = new CadastroPOO();
-        obj.run();
+        obj.runTestMode();
         obj.runMenuMode();
     }
     

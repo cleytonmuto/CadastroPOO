@@ -29,6 +29,12 @@ public class PessoaFisicaRepo implements Serializable {
         return pessoasFisicas.contains(pf) ? false : pessoasFisicas.add(pf);
     }
     
+    public void inserir(String filename, PessoaFisica pf) {
+        recuperar(filename);
+        inserir(pf);
+        persistir(filename);
+    }
+    
     public boolean alterar(PessoaFisica pf) {
         int position = pessoasFisicas.indexOf(pf);
         if (position != -1) {
@@ -38,8 +44,20 @@ public class PessoaFisicaRepo implements Serializable {
         return false;
     }
     
+    public void alterar(String filename, PessoaFisica pf) {
+        recuperar(filename);
+        alterar(pf);
+        persistir(filename);
+    }
+    
     public boolean excluir(int id) {
         return pessoasFisicas.remove(obter(id));
+    }
+    
+    public void excluir(String filename, int id) {
+        recuperar(filename);
+        excluir(id);
+        persistir(filename);
     }
     
     public PessoaFisica obter(int id) {
