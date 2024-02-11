@@ -73,5 +73,9 @@ public class PessoaJuridicaRepo implements Serializable {
             LOGGER.log(Level.SEVERE, e.toString(), e);
         }
     }
+    
+    public long getSerialVersionUID() {
+        return serialVersionUID;
+    }
 
 }
