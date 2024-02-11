@@ -30,7 +30,6 @@ public class PessoaFisicaRepo implements Serializable {
     }
     
     public void inserir(String filename, PessoaFisica pf) {
-        recuperar(filename);
         inserir(pf);
         persistir(filename);
     }
@@ -45,7 +44,6 @@ public class PessoaFisicaRepo implements Serializable {
     }
     
     public void alterar(String filename, PessoaFisica pf) {
-        recuperar(filename);
         alterar(pf);
         persistir(filename);
     }
@@ -54,10 +52,10 @@ public class PessoaFisicaRepo implements Serializable {
         return pessoasFisicas.remove(obter(id));
     }
     
-    public void excluir(String filename, int id) {
-        recuperar(filename);
-        excluir(id);
+    public boolean excluir(String filename, int id) {
+        boolean status = excluir(id);
         persistir(filename);
+        return status;
     }
     
     public PessoaFisica obter(int id) {
@@ -78,7 +76,6 @@ public class PessoaFisicaRepo implements Serializable {
         catch (IOException e) {
             LOGGER.log(Level.SEVERE, e.toString(), e);
         }
-        System.out.println("Dados de Pessoa Fisica Armazenados.");
     }
     
     public void recuperar(String filename) {
@@ -91,7 +88,6 @@ public class PessoaFisicaRepo implements Serializable {
         catch (IOException e) {
             LOGGER.log(Level.SEVERE, e.toString(), e);
         }
-        System.out.println("Dados de Pessoa Fisica Recuperados.");
     }
     
     public long getSerialVersionUID() {

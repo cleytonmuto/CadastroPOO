@@ -30,7 +30,6 @@ public class PessoaJuridicaRepo implements Serializable {
     }
     
     public void inserir(String filename, PessoaJuridica pj) {
-        recuperar(filename);
         inserir(pj);
         persistir(filename);
     }
@@ -45,7 +44,6 @@ public class PessoaJuridicaRepo implements Serializable {
     }
     
     public void alterar(String filename, PessoaJuridica pj) {
-        recuperar(filename);
         alterar(pj);
         persistir(filename);
     }
@@ -54,10 +52,10 @@ public class PessoaJuridicaRepo implements Serializable {
         return pessoasJuridicas.remove(obter(id));
     }
     
-    public void excluir(String filename, int id) {
-        recuperar(filename);
-        excluir(id);
+    public boolean excluir(String filename, int id) {
+        boolean status = excluir(id);
         persistir(filename);
+        return status;
     }
     
     public PessoaJuridica obter(int id) {
@@ -78,7 +76,6 @@ public class PessoaJuridicaRepo implements Serializable {
         catch (IOException e) {
             LOGGER.log(Level.SEVERE, e.toString(), e);
         }
-        System.out.println("Dados de Pessoa Juridica Armazenados.");
     }
     
     public void recuperar(String filename) {
@@ -91,7 +88,6 @@ public class PessoaJuridicaRepo implements Serializable {
         catch (IOException e) {
             LOGGER.log(Level.SEVERE, e.toString(), e);
         }
-        System.out.println("Dados de Pessoa Juridica Recuperados.");
     }
     
     public long getSerialVersionUID() {
