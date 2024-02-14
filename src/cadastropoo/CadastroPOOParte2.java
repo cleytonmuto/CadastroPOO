@@ -12,7 +12,7 @@ import java.io.File;
  */
 public class CadastroPOOParte2 {
     
-    private static final Logger LOGGER = Logger.getLogger(CadastroPOOParte1.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(CadastroPOOParte2.class.getName());
     private Scanner in;
     private PessoaFisicaRepo repoPF;
     private PessoaJuridicaRepo repoPJ;
